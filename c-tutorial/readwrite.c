@@ -11,6 +11,10 @@ void read(char *fname, float *a, float *b, float *c) {
   fscanf(fin, "b = %f\n", b);
   fscanf(fin, "c = %f\n", c);
 
+
+  float d = 10;
+  fscanf(fin, "c = %f\n", &d);
+
   printf("a = %f\nb = %f\nc = %f\n", *a, *b, *c);
 
   // close file
