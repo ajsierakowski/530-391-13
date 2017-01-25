@@ -28,37 +28,37 @@ int main(int argn, char* argv[]) {
   int j = 0;
   clock_t start = clock();
   clock_t diff;
-  for(j = 0; j < 1000; j++) {
-    // openMP search
-    int sub_max[np];
-    for(i = 0; i < np; i++) {
-      sub_max[i] = 0;
-    }
-    int max = 0;
+  // openMP search
+  int sub_max[np];
+  for(i = 0; i < np; i++) {
+    sub_max[i] = 0;
+  }
+  int max = 0;
 
-#pragma omp parallel num_threads(np)
-    {
+  #pragma omp parallel num_threads(np)
+  {
+    for(j = 0; j < 1000; j++) {
       // setting up the search
       int tid = omp_get_thread_num();
-      i = 0;
+      int k = 0;
       int split = n / np;
 
       // do search over this thread's piece
-      for(i = tid*split; i < (tid+1)*split; i++) {
+      for(k = tid*split; k < (tid+1)*split; k++) {
         //printf("tid = %d i = %d\n", tid, i);
-        if(A[i] > sub_max[tid]) {
-          sub_max[tid] = A[i];
+        if(A[k] > sub_max[tid]) {
+          sub_max[tid] = A[k];
         }
       }
-    }
-    for(i = 0; i < np; i++) {
-      if(sub_max[i] > max) {
-        max = sub_max[i];
-      }
-    }    
+      for(i = 0; i < np; i++) {
+        if(sub_max[i] > max) {
+          max = sub_max[i];
+        }
+      }    
 
-    if(j == 999) {
-      printf("The maximum is %d\n", max);
+      if(j == 999) {
+        printf("The maximum is %d\n", max);
+      }
     }
   }
   diff = clock() - start;
